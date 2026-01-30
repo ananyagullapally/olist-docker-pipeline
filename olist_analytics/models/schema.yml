@@ -1,0 +1,16 @@
+version: 2
+
+sources:
+  - name: public
+    tables:
+      - name: fact_orders
+      - name: fact_order_items
+      - name: dim_products   # <--- Added this
+      - name: dim_customers  # <--- Added this
+
+models:
+  - name: mart_category_profit
+    columns:
+      - name: product_category_name
+        tests:
+          - unique
