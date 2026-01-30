@@ -4,14 +4,14 @@ A production-ready ELT (Extract, Load, Transform) pipeline designed to process B
 
 
 
-## 🛠️ Architecture & Tools
+## Architecture & Tools
 - **Orchestration:** Python (Pandas) for automated data extraction and loading.
 - **Data Warehouse:** PostgreSQL (Relational Database) for storage.
 - **Transformations:** dbt (data build tool) for SQL-based modeling and KPI generation.
 - **Containerization:** Docker for a fully reproducible environment.
 - **Analytics:** Automated generation of Profit Margin, Monthly Revenue, and Customer LTV charts.
 
-## 🔄 The ELT Workflow
+## The ELT Workflow
 Unlike traditional ETL, this project follows an **ELT** approach:
 1. **Extract & Load:** Python scripts read raw Olist datasets and load them directly into PostgreSQL "as-is" to preserve data lineage.
 2. **Transform:** dbt models execute SQL inside the warehouse to clean data, join tables, and build analytical "Marts."
