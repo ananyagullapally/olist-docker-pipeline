@@ -7,11 +7,24 @@ A production-ready ELT (Extract, Load, Transform) pipeline that orchestrates the
 * **Storage:** PostgreSQL (OLAP)
 * **Transformation:** dbt (Data Build Tool)
 * **Scripting:** Python (ELT) and Bash (Workflow Automation)
+---
+## Project Structure
+.
+├── assets/               # Screenshots of SQL logic, Lineage, and Dashboards
+├── data/                 # Raw Olist CSV files (Local only, ignored by Git)
+├── scripts/              # SQL transformation scripts
+├── .gitignore            # Prevents .env and data/ from being uploaded
+├── docker-compose.yml    # Defines Postgres and App containers
+├── main.py               # Python logic for Loading data
+├── README.md             # Project documentation
+└── run_pipeline.sh       # Bash script to orchestrate the entire flow
 
 ---
 
 ## Data Modeling and Lineage
-The transformation layer is built on a modular design, moving from raw source tables to optimized analytical marts. The Directed Acyclic Graph (DAG) illustrates the dependencies between dimensional models and business views.
+I implemented a **Star Schema** approach (or whatever your SQL code builds) to optimize for analytical queries:
+- **Fact Table:** `fact_orders` (containing order values and timestamps).
+- **Dimension Tables:** `dim_customers`, `dim_products`, and `dim_sellers`.
 
 ### Lineage Graph
 ![SQL_LOGIC](./assets/lineage_diagram.png)
@@ -46,6 +59,20 @@ GROUP BY 1
 HAVING COUNT(i.order_id) > 100
 ORDER BY margin_ratio DESC
 ```
+---
+## Challenges & Lessons Learned
+
+### 1. Data Integrity and Schema Mapping
+**Challenge:** The Olist dataset has complex relationships between orders, payments, and reviews. Initially, some joins resulted in duplicate rows.
+**Lesson:** I learned the importance of verifying primary keys before performing joins in the **Transform (T)** stage of my ELT process.
+
+### 2. Orchestration with Bash
+**Challenge:** The Python script would sometimes attempt to load data before the PostgreSQL Docker container was fully healthy.
+**Lesson:** I implemented a `wait-for-it` style check in my `run_pipeline.sh` to ensure the database port was open before execution.
+
+### 3. Git Workflow & Asset Management
+**Challenge:** Managing large image assets and environment variables in a remote VM environment.
+**Lesson:** I learned how to use `.gitignore` effectively to keep credentials secure and how to manage a clean repository structure using an `assets/` folder.
 ---
 ## Cloning
 Follow these instructions to replicate the environment and run the data pipeline locally.
