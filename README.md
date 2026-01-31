@@ -14,7 +14,6 @@ A production-ready ELT (Extract, Load, Transform) pipeline that orchestrates the
 The transformation layer is built on a modular design, moving from raw source tables to optimized analytical marts. The Directed Acyclic Graph (DAG) illustrates the dependencies between dimensional models and business views.
 
 ### Lineage Graph
-![dbt Lineage Graph](./assets/lineage_graph.jpg)
 
 * **Source Layer:** Ingested raw data including dim_customers, fact_orders, dim_products, and fact_order_items.
 * **Transformation Layer:** Modular SQL logic for complex metrics such as Customer Lifetime Value (LTV) and Monthly Revenue Growth.
