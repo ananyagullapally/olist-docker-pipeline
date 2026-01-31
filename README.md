@@ -76,7 +76,8 @@ ORDER BY margin_ratio DESC
 
 ### 3. Git Workflow & Asset Management
 * **Challenge:** Managing large image assets for documentation and sensitive environment variables in a remote VM threatened to clutter the repository and compromise security.
-* **Solution:** * Leveraged a dedicated `assets/` folder to maintain a clean root directory.
+* **Solution:**
+    * Leveraged a dedicated `assets/` folder to maintain a clean root directory.
     * Strictly enforced `.gitignore` policies to ensure `.env` and raw `/data` files never reached the public repository.
 * **Lesson:** Professional repository management requires a clear separation between code, configuration, and documentation.
 ---
