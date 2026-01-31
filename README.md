@@ -10,7 +10,7 @@ A production-ready ELT (Extract, Load, Transform) pipeline that orchestrates the
 * **Scripting:** Python (ELT) and Bash (Workflow Automation)
 ---
 ## Project Structure
-
+```
 .
 ├── assets/               # Screenshots of SQL logic, Lineage, and Dashboards
 ├── data/                 # Raw Olist CSV files (Local only, ignored by Git)
@@ -20,7 +20,7 @@ A production-ready ELT (Extract, Load, Transform) pipeline that orchestrates the
 ├── main.py               # Python logic for Loading data
 ├── README.md             # Project documentation
 └── run_pipeline.sh       # Bash script to orchestrate the entire flow
-
+```
 ---
 
 ## Data Modeling and Lineage
