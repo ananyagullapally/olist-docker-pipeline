@@ -65,8 +65,10 @@ ORDER BY margin_ratio DESC
 ## Challenges & Lessons Learned
 
 ### 1. Data Integrity and Schema Mapping
-**Challenge:** The Olist dataset has complex relationships between orders, payments, and reviews. Initially, some joins resulted in duplicate rows.
-**Lesson:** I learned the importance of verifying primary keys before performing joins in the **Transform (T)** stage of my ELT process.
+**Challenge:** 
+The Olist dataset has complex relationships between orders, payments, and reviews. Initially, some joins resulted in duplicate rows.
+**Lesson:** 
+I learned the importance of verifying primary keys before performing joins in the **Transform (T)** stage of my ELT process.
 
 ### 2. Orchestration with Bash
 **Challenge:** The Python script would sometimes attempt to load data before the PostgreSQL Docker container was fully healthy.
