@@ -3,7 +3,7 @@
 A production-ready ELT (Extract, Load, Transform) pipeline that orchestrates the ingestion and transformation of Brazilian e-commerce data. This project leverages Docker for environment isolation, PostgreSQL as the data warehouse, and dbt for dimensional modeling and data quality assurance.
 
 ## Architecture and Tech Stack
-![SQL_LOGIC}(./assets/architecture-diagram-olist.png)
+![SQL_LOGIC](./assets/architecture-diagram-olist.png)
 * **Orchestration:** Docker and Docker Compose
 * **Storage:** PostgreSQL (OLAP)
 * **Transformation:** dbt (Data Build Tool)
