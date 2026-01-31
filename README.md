@@ -1,42 +1,73 @@
-# Olist E-Commerce ELT Pipeline 
+# Olist E-Commerce ELT Pipeline
 
-A production-ready ELT (Extract, Load, Transform) pipeline designed to process Brazilian e-commerce data. This project demonstrates a modern data engineering workflow using **Python**, **PostgreSQL**, **dbt**, and **Docker**.
+A production-ready ELT (Extract, Load, Transform) pipeline that orchestrates the ingestion and transformation of Brazilian e-commerce data. This project leverages Docker for environment isolation, PostgreSQL as the data warehouse, and dbt for dimensional modeling and data quality assurance.
 
+## Architecture and Tech Stack
+* **Orchestration:** Docker and Docker Compose
+* **Storage:** PostgreSQL (OLAP)
+* **Transformation:** dbt (Data Build Tool)
+* **Scripting:** Python (ETL) and Bash (Workflow Automation)
 
+---
 
-## Architecture & Tools
-- **Orchestration:** Python (Pandas) for automated data extraction and loading.
-- **Data Warehouse:** PostgreSQL (Relational Database) for storage.
-- **Transformations:** dbt (data build tool) for SQL-based modeling and KPI generation.
-- **Containerization:** Docker for a fully reproducible environment.
-- **Analytics:** Automated generation of Profit Margin, Monthly Revenue, and Customer LTV charts.
+## Data Modeling and Lineage
+The transformation layer is built on a modular design, moving from raw source tables to optimized analytical marts. The Directed Acyclic Graph (DAG) illustrates the dependencies between dimensional models and business views.
 
-## The ELT Workflow
-Unlike traditional ETL, this project follows an **ELT** approach:
-1. **Extract & Load:** Python scripts read raw Olist datasets and load them directly into PostgreSQL "as-is" to preserve data lineage.
-2. **Transform:** dbt models execute SQL inside the warehouse to clean data, join tables, and build analytical "Marts."
-3. **Visualize:** A final Python layer queries the dbt-transformed views to generate business intelligence visualizations.
+### Lineage Graph
+![dbt Lineage Graph](./assets/lineage_graph.jpg)
 
-## How to Run (Docker)
-This project is fully containerized. To run the entire pipeline with a single command:
+* **Source Layer:** Ingested raw data including dim_customers, fact_orders, dim_products, and fact_order_items.
+* **Transformation Layer:** Modular SQL logic for complex metrics such as Customer Lifetime Value (LTV) and Monthly Revenue Growth.
+* **Mart Layer:** Business-ready tables like mart_category_profit, designed for direct consumption by BI tools.
 
-### Prerequisites
-- Docker installed
-- PostgreSQL running on the host machine (or as a sibling container)
+---
 
-### Execution
-1. Clone the repository
-\`\`\`bash
+## Data Quality and Reliability
+To ensure data integrity, I implemented an automated testing suite within the dbt lifecycle:
+
+* **Custom Business Logic Tests:** Created `assert_positive_revenue` to catch cases where revenue might be reported as zero or negative before it reaches final reporting.
+* **Schema Validation:** Enforced `unique` and `not_null` constraints on primary keys across all fact and dimension tables.
+
+---
+
+## Sample Compiled SQL: mart_category_profit
+This model demonstrates the logic used to calculate profitability at the category level, including shipping margins and volume filtering.
+
+```sql
+SELECT
+    p.product_category_name,
+    COUNT(i.order_id) as total_sales_count,
+    SUM(i.price) as total_revenue,
+    SUM(i.freight_value) as total_shipping_costs,
+    ROUND((SUM(i.price) / (SUM(i.price) + SUM(i.freight_value)))::numeric, 3) as margin_ratio
+FROM dim_products p
+JOIN fact_order_items i ON p.product_id = i.product_id
+GROUP BY 1
+HAVING COUNT(i.order_id) > 100
+ORDER BY margin_ratio DESC
+---
+###Getting Started
+Prerequisites
+Docker and Docker Compose installed
+
+Git
+
+Execution
+Clone the repository:
+
+Bash
+
 git clone [https://github.com/ananyagullapally/olist-docker-pipeline.git](https://github.com/ananyagullapally/olist-docker-pipeline.git)
 cd olist-docker-pipeline
-\`\`\`
+Launch the stack:
 
-2. Build the Docker image
-\`\`\`bash
-docker build -t olist-pipeline .
-\`\`\`
+Bash
 
-3. Run the pipeline
-\`\`\`bash
-docker run --network="host" -v $(pwd):/app olist-pipeline
-\`\`\`
+docker-compose up -d
+Execute the Pipeline:
+
+Bash
+
+bash run_pipeline.sh
+Access dbt Documentation:
+The documentation server runs on http://localhost:8080. (If running on a remote VM, ensure your SSH tunnel is active: ssh -L 8080:127.0.0.1:8080 ananya@your-vm-ip).
