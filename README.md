@@ -62,21 +62,23 @@ HAVING COUNT(i.order_id) > 100
 ORDER BY margin_ratio DESC
 ```
 ---
-## Challenges & Lessons Learned
+## Key Challenges & Lessons Learned
 
-### 1. Data Integrity and Schema Mapping
-**Challenge:** 
-The Olist dataset has complex relationships between orders, payments, and reviews. Initially, some joins resulted in duplicate rows.
-**Lesson:** 
-I learned the importance of verifying primary keys before performing joins in the **Transform (T)** stage of my ELT process.
+### 1. Data Integrity during Transformation
+* **Challenge:** I discovered that performing joins in the **Transform (T)** stage could lead to duplicate records or data fan-out if primary keys weren't unique across the Olist source files.
+* **Solution:** I implemented strict primary key verification and deduplication logic within the SQL transformation scripts before final table materialization.
+* **Lesson:** Always validate the "grain" of your data before joining tables in a data warehouse environment.
 
-### 2. Orchestration with Bash
-**Challenge:** The Python script would sometimes attempt to load data before the PostgreSQL Docker container was fully healthy.
-**Lesson:** I implemented a `wait-for-it` style check in my `run_pipeline.sh` to ensure the database port was open before execution.
+### 2. Container Orchestration & Race Conditions
+* **Challenge:** The Python ingestion script would occasionally fail because it attempted to connect to PostgreSQL before the Docker container was fully healthy and ready to accept connections.
+* **Solution:** I implemented a **wait-for-it** style health check in `run_pipeline.sh`. This ensures the database port is open and the service is responsive before triggering the Python loader.
+* **Lesson:** Infrastructure readiness is just as critical as code logic in containerized environments.
 
 ### 3. Git Workflow & Asset Management
-**Challenge:** Managing large image assets and environment variables in a remote VM environment.
-**Lesson:** I learned how to use `.gitignore` effectively to keep credentials secure and how to manage a clean repository structure using an `assets/` folder.
+* **Challenge:** Managing large image assets for documentation and sensitive environment variables in a remote VM threatened to clutter the repository and compromise security.
+* **Solution:** * Leveraged a dedicated `assets/` folder to maintain a clean root directory.
+    * Strictly enforced `.gitignore` policies to ensure `.env` and raw `/data` files never reached the public repository.
+* **Lesson:** Professional repository management requires a clear separation between code, configuration, and documentation.
 ---
 ## Cloning
 Follow these instructions to replicate the environment and run the data pipeline locally.
