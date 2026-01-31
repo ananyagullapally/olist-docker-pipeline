@@ -46,7 +46,7 @@ To ensure data integrity, I implemented an automated testing suite within the db
 ## Sample Compiled SQL: mart_category_profit
 This model demonstrates the logic used to calculate profitability at the category level, including shipping margins and volume filtering.
 
-![SQL_LOGIC](./assets/mart_category-profit.png)
+![SQL_LOGIC](./assets/mart_category_profit.png)
 ```sql
 SELECT
     p.product_category_name,
