@@ -81,18 +81,6 @@ ORDER BY margin_ratio DESC
     * Strictly enforced `.gitignore` policies to ensure `.env` and raw `/data` files never reached the public repository.
 * **Lesson:** Professional repository management requires a clear separation between code, configuration, and documentation.
 ---
-# Olist ELT Pipeline – Business Findings & Analytical Impact
-
-## Project Overview
-This project implements an end-to-end **ELT (Extract, Load, Transform) pipeline** on the Brazilian Olist e-commerce dataset using Docker, PostgreSQL, and dbt.  
-Beyond building the infrastructure, the goal of this project is to enable **trustworthy business insights** by enforcing correct data grain, clean transformations, and analytics-ready modeling.
-
-This document summarizes:
-- The **key business observations** derived from the data
-- How the **ELT pipeline directly enables and validates** these insights
-
----
-
 ## Key Business Findings
 
 ### 1. Revenue is highly concentrated across product categories
@@ -105,7 +93,7 @@ The marketplace follows a Pareto-style distribution, where growth is driven by a
 **Business Implication**  
 Strategic focus on high-performing categories (pricing, promotions, seller quality) would deliver greater ROI than uniform category expansion.
 
---
+---
 
 ### 2. High order volume does not imply high revenue
 **Observation**  
